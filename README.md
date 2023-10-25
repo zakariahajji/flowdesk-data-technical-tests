@@ -7,7 +7,7 @@ You'll need to install [Docker](https://www.docker.com/products/docker-desktop/)
 Deploy the postgres with
 
 ```sh
-docker compose up --force-recreate --remove-orphans --build
+docker compose -f deploy/docker-compose.yaml up --force-recreate --remove-orphans --build
 ```
 
 Interact with the data with `psql`
@@ -17,4 +17,10 @@ brew install postgresql
 docker exec -it flowdesk-postgresql psql --user flowdesk
 select * from trades;
 select * from indexes;
+```
+
+Clean-up workspace with
+
+```sh
+docker compose -f deploy/docker-compose.yaml down -v
 ```
