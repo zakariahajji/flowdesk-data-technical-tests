@@ -27,8 +27,33 @@ data = [
     },
 ]
 df = pd.DataFrame(data)
-print(df)
+print(f"Pandas dataframe  : {df}")
+print(f"Pandas Types : \n{df.dtypes}")
 
 
 def generate_bigquery_schema_from_pandas(df: pd.DataFrame) -> list[dict]:
-    return
+
+    type_mapping = {
+        "int64": "INTEGER",  # in test data
+        "float64": "FLOAT",  # in test data
+        "object": "STRING",  # in test data
+        "datetime64[ns]": "DATETIME",  # in test data
+        "bool": "BOOLEAN",  # added for robustness
+    }
+    schema = []
+
+    # Getting the list of types :
+    list_of_types = df.dtypes.items()
+
+    # Building Schema
+    for column_name, its_type in list_of_types:
+        bigquery_type = type_mapping.get(
+            str(its_type), "STRING"
+        )  # Defaulting to string if the type does not match the mapping
+
+        schema.append({"name": column_name, "type": bigquery_type})
+
+    return schema
+
+
+print(generate_bigquery_schema_from_pandas(df))
